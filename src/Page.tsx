@@ -8,11 +8,15 @@ import ParquetMetadata from './ParquetMetadata.js'
 
 type Lens = 'table' | 'metadata' | 'layout' | 'grid'
 
-export interface PageProps {
+export interface DataSet {
   metadata: FileMetaData
   df: DataFrame
   name: string
   byteLength?: number
+}
+
+export interface PageProps {
+  dataSets: DataSet[]
   setError: (e: unknown) => void
 }
 
@@ -21,13 +25,31 @@ export interface PageProps {
  * @param {Object} props
  * @returns {ReactNode}
  */
-export default function Page({ metadata, df, name, byteLength, setError }: PageProps): ReactNode {
+export default function Page({ dataSets, setError }: PageProps): ReactNode {
   const [lens, setLens] = useState<Lens>('table')
+  const [selectedIndex, setSelectedIndex] = useState(0)
+
+
+  const selectedDataSet = dataSets[selectedIndex] ?? dataSets[0]
+  if (!selectedDataSet) {
+    return <div>No parquet files found</div>
+  }
+  const { df, metadata, name, byteLength } = selectedDataSet
 
   return <>
-    <div className='top-header'>
-      {name}
-    </div>
+    <header className='top-header'>
+      <div>
+        <img className="tapir-logo" src="/TAPIR-positiv.svg" alt="DNS Tapir" />
+          DNS Tapir
+      </div>
+      <select value={selectedIndex} onChange={(e) => setSelectedIndex(Number(e.target.value))} aria-label="Parquet file" >
+        {dataSets.map((dataSet, index) => (
+          <option key={index} value={index}>
+            {dataSet.name}
+          </option>
+        ))}
+      </select>
+    </header>
     <div className='view-header'>
       {byteLength !== undefined && <span title={byteLength.toLocaleString() + ' bytes'}>{formatFileSize(byteLength)}</span>}
       <span>{df.numRows.toLocaleString()} rows</span>

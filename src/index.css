@@ -424,3 +424,14 @@ input[type="file"] {
 .column-label.odd {
   background-color: rgba(80, 160, 220, 0.15);
 }
+
+logo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+.tapir-logo {
+  width: 5rem;
+  height: auto;
+}
