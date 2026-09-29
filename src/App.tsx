@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { sortableDataFrame } from 'hightable'
-import { byteLengthFromUrl, parquetMetadataAsync } from 'hyparquet'
+import { parquetMetadataAsync } from 'hyparquet'
 import { asyncBufferFrom, parquetDataFrame } from 'hyperparam'
 import { useCallback, useEffect, useState } from 'react'
 
