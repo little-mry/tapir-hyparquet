@@ -13,17 +13,17 @@ const parquetUrls = import.meta.glob('./parquets/*.parquet', {
   import: 'default' 
 }) as Record<string, string>
 
-const loadDataSet = async (path: string, relativeUrl: string): Promise<DataSet> => {
-  const url = new URL(relativeUrl, location.href).href
-  const byteLength = await byteLengthFromUrl(url)
-  const from = { url, byteLength }
+const loadDataSet = async (path: string, url: string): Promise<DataSet> => {
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`)
+  const name = path.split('/').pop() ?? path
+  const file = new File([await res.blob()], name)
+  const from = { file, byteLength: file.size }
   const asyncBuffer = await asyncBufferFrom(from)
   const metadata = await parquetMetadataAsync(asyncBuffer)
   const df = sortableDataFrame(parquetDataFrame(from, metadata))
-  const name = path.split('/').pop() ?? path
-  return { metadata, df, name, byteLength }
+  return { metadata, df, name, byteLength: file.size }
 }
-
 
 export default function App(): ReactNode {
   const [error, setError] = useState<Error>()
