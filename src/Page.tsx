@@ -38,10 +38,9 @@ export default function Page({ dataSets, setError }: PageProps): ReactNode {
 
   return <>
     <header className='top-header'>
-      <div>
-        <img className="tapir-logo" src="/TAPIR-positiv.svg" alt="DNS Tapir" />
+          <img className="tapir-logo" src="TAPIR-positiv.svg" alt="DNS Tapir" />
           DNS Tapir
-      </div>
+    
       <select value={selectedIndex} onChange={(e) => setSelectedIndex(Number(e.target.value))} aria-label="Parquet file" >
         {dataSets.map((dataSet, index) => (
           <option key={index} value={index}>
