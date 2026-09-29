@@ -22,7 +22,7 @@ interface LayoutProps {
 export default function Layout({ children, className, progress, error }: LayoutProps): ReactNode {
   // Update title
   useEffect(() => {
-    document.title = 'hyparquet demo - apache parquet file viewer online'
+    document.title = 'DNS Tapir hyparquet'
   }, [])
 
   return <>
